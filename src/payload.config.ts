@@ -8,7 +8,7 @@ import { buildConfig } from 'payload/config'
 
 import Users from './collections/Users'
 import Appointments from './collections/Appointments'
-import Services from './collections/Services'
+import VetServices from './collections/VetServices'
 
 export default buildConfig({
   admin: {
@@ -18,9 +18,10 @@ export default buildConfig({
   editor: slateEditor({}),
   collections: [
     Appointments,
-    Services,
+    VetServices,
     Users,
   ],
+  cors: "*", //HZUMAETA: Si no lo pongom tendré problemas de cors en el cliente
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
   },
