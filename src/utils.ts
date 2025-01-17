@@ -21,3 +21,18 @@ export const setVetServices = async (vetId, serviceData: any) => {
     });
     return vetServices;
 }
+
+
+export const retrieveBtVetId = async (vetId: string) => {
+    const vetCommunities = await payload.find({
+        collection: 'vet-communities',
+        where: {
+            vetId: {
+                equals: vetId,
+            },
+        },
+    });
+    return vetCommunities;
+}
+
+

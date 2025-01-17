@@ -9,6 +9,8 @@ import { buildConfig } from 'payload/config'
 import Users from './collections/Users'
 import Appointments from './collections/Appointments'
 import VetServices from './collections/VetServices'
+import VetCommunities from './collections/VetCommunities'
+import { Media } from './collections/Media'
 
 export default buildConfig({
   admin: {
@@ -19,7 +21,9 @@ export default buildConfig({
   collections: [
     Appointments,
     VetServices,
+    VetCommunities,
     Users,
+    Media
   ],
   cors: "*", //HZUMAETA: Si no lo pongom tendré problemas de cors en el cliente
   typescript: {
