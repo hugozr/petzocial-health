@@ -23,7 +23,7 @@ export const setVetServices = async (vetId, serviceData: any) => {
 }
 
 
-export const retrieveBtVetId = async (vetId: string) => {
+export const retrieveBytVetId = async (vetId: string) => {
     const vetCommunities = await payload.find({
         collection: 'vet-communities',
         where: {
@@ -35,4 +35,19 @@ export const retrieveBtVetId = async (vetId: string) => {
     return vetCommunities;
 }
 
+export const canDeleteVet = async (vetId: string) => {
+        const humans = await payload.find({
+        collection: 'vet-communities',
+        depth: 1,
+        where: {
+            vetId: {
+                equals: vetId,
+            },
+        },
+    });
+    if (humans.totalDocs > 0) {
+        return ({ canDelete: false, message: "There are associated communities. Check that!" })
+    }
+    return ({ canDelete: true, message: "You can delete this vet" });
+}
 

@@ -1,5 +1,5 @@
 import { CollectionConfig } from 'payload/types'
-import { getVetServices, retrieveBtVetId, setVetServices } from '../utils';
+import { canDeleteVet, getVetServices, retrieveBytVetId, setVetServices } from '../utils';
 
 const VetCommunities: CollectionConfig = {
   slug: 'vet-communities',
@@ -18,8 +18,16 @@ const VetCommunities: CollectionConfig = {
       path: '/:vetId/by-vet-id',
       method: "get",
       handler: async (req, res, next) => {
-        const communities = await retrieveBtVetId(req.params.vetId);
+        const communities = await retrieveBytVetId(req.params.vetId);
         res.status( 200 ).send(communities);
+      },
+    },
+    {
+      path: "/:vetId/can-delete",
+      method: "get",
+      handler: async (req, res, next) => {
+        const pets = await canDeleteVet(req.params.vetId);
+        res.status(200).send(pets);
       },
     },
   ],
