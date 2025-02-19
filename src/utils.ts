@@ -1,3 +1,4 @@
+import { equal } from 'assert';
 import payload from 'payload'
 
 export const getVetServices = async (vetId) => {
@@ -51,3 +52,44 @@ export const canDeleteVet = async (vetId: string) => {
     return ({ canDelete: true, message: "You can delete this vet" });
 }
 
+export const filterAppointments = async (data: any) => {
+    console.log(data, ";,,")
+    const filter = data.filterIdName;
+    const whereConditions: any = {
+        or: [
+            {
+                [filter]: { // Uso de la variable como clave dinámica
+                    equals: data.id,
+                },
+            },
+        ],
+    };
+    if (data.dateRange.startDate && data.dateRange.endDate) {
+        whereConditions.and = [
+            {
+                appointmentDate: {
+                    greater_than_equal: data.dateRange.startDate
+                },
+            },
+            {
+                appointmentDate: {
+                    less_than_equal:addOneDay(data.dateRange.endDate)
+                },
+            },
+        ];
+    }
+    console.log(whereConditions, "aaa")
+    const appointments = await payload.find({
+        collection: 'appointments',
+        page: data.page,
+        limit: data.limit,
+        where: whereConditions,
+    });
+    return appointments;
+}
+
+function addOneDay(dateISO) {
+    let date = new Date(dateISO); // Convertir el string a un objeto Date
+    date.setUTCDate(date.getUTCDate() + 1); // Sumar un día manteniendo la zona horaria UTC
+    return date.toISOString(); // Convertir de nuevo a formato ISO
+}

@@ -1,4 +1,5 @@
 import { CollectionConfig } from 'payload/types'
+import { filterAppointments } from '../utils';
 
 const Appointments: CollectionConfig = {
   slug: 'appointments',
@@ -12,6 +13,16 @@ const Appointments: CollectionConfig = {
   admin: {
     useAsTitle: 'description',
   },
+    endpoints: [
+      {
+        path: "/filter-me",
+        method: "put",
+        handler: async (req, res, next) => {
+        const appointments = await filterAppointments(req.body);
+        res.status(200).send(appointments);
+      },
+      },
+    ],
   fields: [
     {
       name: 'description',
