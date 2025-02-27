@@ -1,8 +1,8 @@
 import { CollectionConfig } from 'payload/types'
-import { filterAppointments } from '../utils';
+import { filterAppointments, retrievePetHealthRecord } from '../utils';
 
-const Appointments: CollectionConfig = {
-  slug: 'appointments',
+const PetHealthRecords: CollectionConfig = {
+  slug: 'pet-health-records',
   auth: false,
   access: {
     read: () => true,
@@ -17,30 +17,32 @@ const Appointments: CollectionConfig = {
       {
         path: "/filter-me",
         method: "put",
-        handler: async (req, res, next) => {
-        const appointments = await filterAppointments(req.body);
-        res.status(200).send(appointments);
+          handler: async (req, res, next) => {
+          const appointments = await filterAppointments(req.body);
+          res.status(200).send(appointments);
+        },
       },
+      {
+        path: "/:appointmentId/by-appointment-id",
+        method: "get",
+          handler: async (req, res, next) => {
+          const appointments = await retrievePetHealthRecord(req.params.appointmentId);
+          res.status(200).send(appointments);
+        },
       },
     ],
   fields: [
     {
-      name: 'description',
-      type: 'text',
-      required: true,
+      name: 'appointment',
+      type: 'relationship',
+      relationTo: 'appointments',
     },
     {
-      name: 'email',
+      name: 'appointmentId',
       type: 'text',
-      required: true,
     },
     {
       name: 'petId',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'vetId',
       type: 'text',
       required: true,
     },
@@ -54,30 +56,30 @@ const Appointments: CollectionConfig = {
       type: 'text',
     },
     {
-      name: 'zoneId',
+      name: 'checkUpDate',
+      type: 'date',
+    }, 
+    {
+      name: 'diagnosis',
       type: 'text',
-      required: true,
     },
     {
-      name: 'appointmentDate',
-      type: 'date',
+      name: 'treatment',
+      type: 'text',
+    },
+    
+    {
+      name: 'medications',
+      type: 'text',
     },
     {
       name: 'jsonData',
       type: 'json',
     },
     {
-      name: 'appointmentImage',
+      name: 'checkUpImage',
       type: 'upload',
       relationTo: 'media',
-    },  
-    {
-      name: 'contactMe', 
-      type: 'checkbox', 
-    }, 
-    {
-      name: 'comeHome', 
-      type: 'checkbox', 
     },
     {
       name: 'status', 
@@ -91,16 +93,12 @@ const Appointments: CollectionConfig = {
           value: 'registered',
         },
         {
-          label: 'Accepted',
-          value: 'accepted',
-        },
-        {
-          label: 'Attended',
-          value: 'attended',
-        },
+          label: 'Ended',
+          value: 'ended',
+        }
       ],
     },
   ],
 }
 
-export default Appointments
+export default PetHealthRecords

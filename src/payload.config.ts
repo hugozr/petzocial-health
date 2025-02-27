@@ -11,6 +11,7 @@ import Appointments from './collections/Appointments'
 import VetServices from './collections/VetServices'
 import VetCommunities from './collections/VetCommunities'
 import { Media } from './collections/Media'
+import PetHealthRecords from './collections/PetHealthRecords'
 
 export default buildConfig({
   admin: {
@@ -20,6 +21,7 @@ export default buildConfig({
   editor: slateEditor({}),
   collections: [
     Appointments,
+    PetHealthRecords,
     VetServices,
     VetCommunities,
     Users,

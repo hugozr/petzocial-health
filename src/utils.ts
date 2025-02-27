@@ -23,6 +23,22 @@ export const setVetServices = async (vetId, serviceData: any) => {
     return vetServices;
 }
 
+export const retrievePetHealthRecord = async (appointmentId: string) => {
+    const records = await payload.find({
+        collection: 'pet-health-records',
+        depth: 2,
+        where: {
+            "appointmentId": {
+                equals: appointmentId,
+            },
+        },
+    });
+    console.log(records, "a")
+    if(records.totalDocs > 0){
+        return records.docs[0]
+    }
+    return null ;
+}
 
 export const retrieveBytVetId = async (vetId: string) => {
     const vetCommunities = await payload.find({
@@ -53,7 +69,6 @@ export const canDeleteVet = async (vetId: string) => {
 }
 
 export const filterAppointments = async (data: any) => {
-    console.log(data, ";,,")
     const filter = data.filterIdName;
     const whereConditions: any = {
         or: [
@@ -78,7 +93,6 @@ export const filterAppointments = async (data: any) => {
             },
         ];
     }
-    console.log(whereConditions, "aaa")
     const appointments = await payload.find({
         collection: 'appointments',
         page: data.page,
